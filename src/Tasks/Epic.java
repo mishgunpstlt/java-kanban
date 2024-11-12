@@ -3,11 +3,29 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    ArrayList<Integer> epicsId = new ArrayList<>();
-    public String statusEpic;
+    private ArrayList<Integer> subtaskIdToEpic = new ArrayList<>();
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
-        statusEpic = String.valueOf(status);
+    }
+
+    public void removeSubtask(Subtask subtask) {
+        if (!subtaskIdToEpic.isEmpty()) {
+            subtaskIdToEpic.remove(Integer.valueOf(subtask.getId()));
+        }
+    }
+
+    public void removeAllSubtask() {
+        if (!subtaskIdToEpic.isEmpty()) {
+            subtaskIdToEpic.clear();
+        }
+    }
+
+    public void addSubtask(Subtask subtask) {
+        subtaskIdToEpic.add(subtask.id);
+    }
+
+    public ArrayList<Integer> getSubtaskIdToEpic() {
+        return subtaskIdToEpic;
     }
 }

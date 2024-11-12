@@ -2,11 +2,18 @@ package Tasks;
 
 public class Subtask extends Task {
 
-    public int epicId;
-    public String statusSubtask;
+    private int epicId;
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
+    }
+
+    public int getEpicId() {
+        return epicId;
+    }
 
     public Subtask(String name, String description, Status status) {
         super(name, description, status);
-        statusSubtask = String.valueOf(status);
+
     }
 }
