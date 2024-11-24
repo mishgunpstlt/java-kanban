@@ -38,7 +38,6 @@ class InMemoryHistoryManagerTest {
         taskManager.addTask(task8);
         taskManager.addTask(task9);
 
-
         Epic epic = new Epic("БАК", "Подготовить доклад+презентацию к понедельнику");
         int epicId = taskManager.addEpic(epic);
 
@@ -56,8 +55,6 @@ class InMemoryHistoryManagerTest {
         taskManager.getTaskById(9);
         taskManager.getEpicById(10);
         taskManager.getSubtaskById(11);
-
-        System.out.println("История: " + taskManager.getHistory());
 
         Assertions.assertEquals(task, taskManager.getHistory().get(0), "Задача в истории не совпадает с версией просмотренной задачи");
         Assertions.assertTrue(taskManager.getHistory().size() <= 10, "Размер истории не должен превышать 10 элементов");
