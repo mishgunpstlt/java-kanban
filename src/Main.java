@@ -66,7 +66,20 @@ public class Main {
         }
 
         System.out.println("История:");
-        for (Task task : manager.getHistoryManager().getHistory()) {
+        manager.getTaskById(1);
+        manager.getTaskById(2);
+        manager.getTaskById(3);
+        manager.getTaskById(4);
+        manager.getTaskById(5);
+        manager.getTaskById(6);
+        manager.getEpicById(7);
+        manager.getEpicById(8);
+        manager.getEpicById(9);
+        manager.getSubtaskById(10);
+        manager.getSubtaskById(11);
+        manager.getSubtaskById(12);
+
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
     }

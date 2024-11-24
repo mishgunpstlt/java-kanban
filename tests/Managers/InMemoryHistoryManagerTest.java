@@ -45,16 +45,23 @@ class InMemoryHistoryManagerTest {
         Subtask subtask = new Subtask("Подготовить доклад", "доклад к понедельнику", Status.NEW, epicId);
         taskManager.addSubtask(subtask);
 
-        Collection<Task> tasks = taskManager.getTask();
-        ArrayList<Task> listTask = new ArrayList<>(tasks);
-        Collection<Epic> epics = taskManager.getEpic();
-        Collection<Subtask> subtasks = taskManager.getSubtask();
+        taskManager.getTaskById(1);
+        Task task = taskManager.getTaskById(2);
+        taskManager.getTaskById(3);
+        taskManager.getTaskById(4);
+        taskManager.getTaskById(5);
+        taskManager.getTaskById(6);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(8);
+        taskManager.getTaskById(9);
+        taskManager.getEpicById(10);
+        taskManager.getSubtaskById(11);
 
-        Assertions.assertEquals(listTask.get(1), taskManager.getHistoryManager().getHistory().get(0), "Задача в истории не совпадает с версией просмотренной задачи");
-        Assertions.assertNotEquals(11, taskManager.getHistoryManager().getHistory().size(), "Размер не должен быть больше 10");
-        Assertions.assertNotNull(taskManager.getHistoryManager().getHistory(), "История пустая");
+        System.out.println("История: " + taskManager.getHistory());
 
-
+        Assertions.assertEquals(task, taskManager.getHistory().get(0), "Задача в истории не совпадает с версией просмотренной задачи");
+        Assertions.assertTrue(taskManager.getHistory().size() <= 10, "Размер истории не должен превышать 10 элементов");
+        Assertions.assertNotNull(taskManager.getHistory(), "История пустая");
     }
   
 }
