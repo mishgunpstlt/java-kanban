@@ -3,7 +3,7 @@ package Tasks;
 public class Task {
     protected String nameTask;
     protected String descriptionTask;
-    public Status statusTask;
+    protected Status statusTask;
     protected int id;
 
     public String getNameTask() {

@@ -91,11 +91,11 @@ public class InMemoryTaskManager implements TaskManager  {
             }
         }
         if (allSubtaskNEW) {
-            epic.statusTask = Status.NEW;
+            epic.setStatusTask(Status.NEW);
         } else if (allSubtaskDONE) {
-            epic.statusTask = Status.DONE;
+            epic.setStatusTask(Status.DONE);
         } else {
-            epic.statusTask = Status.IN_PROGRESS;
+            epic.setStatusTask(Status.IN_PROGRESS);
         }
     }
 
