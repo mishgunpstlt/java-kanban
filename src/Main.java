@@ -1,5 +1,8 @@
-import Tasks.*;
-import Managers.*;
+import Managers.TaskManager;
+import Tasks.Epic;
+import Tasks.Status;
+import Tasks.Subtask;
+import Tasks.Task;
 
 import static utils.Managers.getDefault;
 
@@ -78,6 +81,16 @@ public class Main {
         manager.getSubtaskById(10);
         manager.getSubtaskById(11);
         manager.getSubtaskById(12);
+
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println("-------");
+        manager.removeTaskById(4);
+        manager.removeEpicById(7);
+        manager.removeSubtaskById(12);
+        System.out.println("-------");
 
         for (Task task : manager.getHistory()) {
             System.out.println(task);

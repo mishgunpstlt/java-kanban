@@ -10,13 +10,12 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.Managers.getDefault;
 
 class InMemoryTaskManagerTest {
 
     TaskManager taskManager = getDefault();
-
 
     @Test
     void shouldAddNewTask() {
@@ -79,5 +78,4 @@ class InMemoryTaskManagerTest {
         Assertions.assertEquals(1, subtasks.size(), "Неверное количество задач.");
         Assertions.assertEquals(subtask, list.get(0), "Задачи не совпадают.");
     }
-
 }

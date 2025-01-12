@@ -16,5 +16,4 @@ class ManagersTest {
         HistoryManager historyManager = Managers.getDefaultHistory();
         Assertions.assertNotNull(historyManager, "Возвращаем экземпляр не должен быть null");
     }
-
 }
