@@ -88,8 +88,7 @@ public class Main {
 
         System.out.println("-------");
         manager.removeTaskById(4);
-        manager.removeEpicById(7);
-        manager.removeSubtaskById(12);
+        manager.removeEpic();
         System.out.println("-------");
 
         for (Task task : manager.getHistory()) {

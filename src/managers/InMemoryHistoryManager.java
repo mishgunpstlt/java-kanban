@@ -43,32 +43,37 @@ public class InMemoryHistoryManager implements HistoryManager {
         removeNode(node);
     }
 
-    public void linkLast(Task task) {
+    private void linkLast(Task task) {
         Node newNode = new Node(task);
         if (tail == null) {
             head = newNode;
-            tail = newNode;
         } else {
             tail.next = newNode;
             newNode.prev = tail;
-            tail = newNode;
         }
+        tail = newNode;
         taskIdNode.put(task.getId(), newNode);
     }
 
-    public void removeNode(Node node) {
+    private void removeNode(Node node) {
         if (node == null) return;
 
         if (node.prev != null) {
             node.prev.next = node.next;
         } else {
             head = node.next;
+            if (head != null) {
+                head.prev = null;
+            }
         }
 
         if (node.next != null) {
             node.next.prev = node.prev;
         } else {
             tail = node.prev;
+            if (tail != null) {
+                tail.next = null;
+            }
         }
 
         taskIdNode.remove(node.task.getId());

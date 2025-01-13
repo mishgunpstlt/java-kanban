@@ -46,5 +46,8 @@ class InMemoryHistoryManagerTest {
         taskManager.removeEpicById(epicId);
         Assertions.assertEquals(4, taskManager.getHistory().size(), "История должна уменьшаться после удаления");
         Assertions.assertFalse(taskManager.getHistory().contains(subtask), "При удалении эпика должны удаляться и его подзадачи из истории");
+
+        taskManager.removeEpic();
+        Assertions.assertEquals(4, taskManager.getHistory().size(), "При удаление всех эпиков, должны удаляться и подзадачи");
     }
 }
