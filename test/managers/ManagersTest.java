@@ -1,4 +1,4 @@
-package Managers;
+package managers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,5 +16,4 @@ class ManagersTest {
         HistoryManager historyManager = Managers.getDefaultHistory();
         Assertions.assertNotNull(historyManager, "Возвращаем экземпляр не должен быть null");
     }
-
 }

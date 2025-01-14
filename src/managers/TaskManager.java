@@ -1,8 +1,8 @@
-package Managers;
+package managers;
 
-import Tasks.Epic;
-import Tasks.Subtask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 
 import java.util.Collection;
 import java.util.List;
