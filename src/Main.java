@@ -1,4 +1,3 @@
-import com.sun.security.jgss.GSSUtil;
 import managers.FileBackedTaskManager;
 import managers.TaskManager;
 import tasks.Epic;
@@ -7,7 +6,6 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.File;
-import java.util.List;
 import java.util.Scanner;
 
 import static utils.Managers.getDefault;
@@ -68,7 +66,6 @@ public class Main {
         fileBackedTaskManager.addSubtask(subtask1);
         fileBackedTaskManager.addSubtask(subtask2);
         fileBackedTaskManager.addEpic(epic2);
-
     }
 
     private static void createTask() {
