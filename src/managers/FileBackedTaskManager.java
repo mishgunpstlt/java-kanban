@@ -36,7 +36,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Ошибка при чтении файла");
         }
 
-        fileBackedTaskManager.setIdNext(maxId+1);
+        fileBackedTaskManager.setIdNext(maxId + 1);
         return fileBackedTaskManager;
     }
 
