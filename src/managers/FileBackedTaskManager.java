@@ -4,8 +4,6 @@ import exception.ManagerSaveException;
 import tasks.*;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -16,29 +14,33 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
-
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
 
+        int maxId = 0;
+
         try (BufferedReader readerToFile = new BufferedReader(new FileReader(file))) {
+            readerToFile.readLine();
             String line;
             while ((line = readerToFile.readLine()) != null) {
                 Task task = fileBackedTaskManager.fromString(line);
-                if (task instanceof Epic epic) {
-                    fileBackedTaskManager.addEpic(epic);
-                } else if (task instanceof Subtask subtask) {
-                    fileBackedTaskManager.addSubtask(subtask);
+                if (task instanceof Subtask subtask) {
+                    fileBackedTaskManager.addSubtaskFromFile(subtask);
+                } else if (task instanceof Epic epic) {
+                    fileBackedTaskManager.addEpicFromFile(epic);
                 } else {
-                    fileBackedTaskManager.addTask(task);
+                    fileBackedTaskManager.addTaskFromFile(task);
                 }
+                maxId = Math.max(maxId, task.getId());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ManagerSaveException("Ошибка при чтении файла");
         }
 
+        fileBackedTaskManager.setIdNext(maxId+1);
         return fileBackedTaskManager;
     }
 
-    public String toString(Task task) {
+    private String toString(Task task) {
         if (task instanceof Subtask) {
             return task.getId() + "," + TypeTask.SUBTASK + "," + task.getNameTask() + "," + task.getStatusTask()
                     + "," + task.getDescriptionTask() + "," + ((Subtask) task).getEpicId();
@@ -51,19 +53,27 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public Task fromString(String value) {
+    private Task fromString(String value) {
         String[] taskString = value.split(",");
         if (taskString[1].equals("SUBTASK")) {
-            return new Subtask(taskString[2], taskString[4], Status.valueOf(taskString[3]), Integer.parseInt(taskString[5]));
+            Subtask subtask = new Subtask(taskString[2], taskString[4], Status.valueOf(taskString[3]), Integer.parseInt(taskString[5]));
+            subtask.setId(Integer.parseInt(taskString[0]));
+            return subtask;
         } else if (taskString[1].equals("EPIC")) {
-            return new Epic(taskString[2], taskString[4]);
+            Epic epic = new Epic(taskString[2], taskString[4]);
+            epic.setId(Integer.parseInt(taskString[0]));
+            return epic;
         } else {
-            return new Task(taskString[2], taskString[4], Status.valueOf(taskString[3]));
+            Task task = new Task(taskString[2], taskString[4], Status.valueOf(taskString[3]));
+            task.setId(Integer.parseInt(taskString[0]));
+            return task;
         }
     }
 
-    public void save() {
+    private void save() {
         try (BufferedWriter writerToFile = new BufferedWriter(new FileWriter(autoSaveFile))) {
+            writerToFile.write("id,type,name,status,description,epic");
+            writerToFile.newLine();
             for (Task task : getTask()) {
                 writerToFile.write(toString(task));
                 writerToFile.newLine();
@@ -77,11 +87,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 writerToFile.newLine();
             }
         } catch (IOException exception) {
-            try {
-                throw new ManagerSaveException("Ошибка при сохранении в файл");
-            } catch (ManagerSaveException e) {
-                e.getMessage();
-            }
+            throw new ManagerSaveException("Ошибка при сохранении в файл");
         }
     }
 
@@ -107,40 +113,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Collection<Task> getTask() {
-        return super.getTask();
-    }
-
-    @Override
-    public Collection<Epic> getEpic() {
-        return super.getEpic();
-
-    }
-
-    @Override
-    public Collection<Subtask> getSubtask() {
-        return super.getSubtask();
-    }
-
-    @Override
     public void updateEpicStatus(Epic epic) {
         super.updateEpicStatus(epic);
         save();
-    }
-
-    @Override
-    public Task getTaskById(int id) {
-        return super.getTaskById(id);
-    }
-
-    @Override
-    public Subtask getSubtaskById(int id) {
-        return super.getSubtaskById(id);
-    }
-
-    @Override
-    public Epic getEpicById(int id) {
-        return super.getEpicById(id);
     }
 
     @Override
@@ -195,15 +170,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void removeSubtaskById(int id) {
         super.removeSubtaskById(id);
         save();
-    }
-
-    @Override
-    public Collection<Subtask> getSubtaskByEpic(Epic epic) {
-        return super.getSubtaskByEpic(epic);
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return super.getHistory();
     }
 }

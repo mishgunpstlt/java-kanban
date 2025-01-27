@@ -46,6 +46,9 @@ public class Main {
         System.out.println(fileBackedTaskManager.getTask());
         System.out.println(fileBackedTaskManager.getEpic());
         System.out.println(fileBackedTaskManager.getSubtask());
+
+        Task task6 = new Task("Купить п312321родукты", "Овощи, фрукты, колбасу", Status.NEW);
+        System.out.println("Id новой добавленной задачи: " + fileBackedTaskManager.addTask(task6));
     }
 
     private static void addTaskToFile() {
@@ -63,9 +66,9 @@ public class Main {
         fileBackedTaskManager.addTask(task1);
         fileBackedTaskManager.addTask(task2);
         fileBackedTaskManager.addEpic(epic1);
+        fileBackedTaskManager.addEpic(epic2);
         fileBackedTaskManager.addSubtask(subtask1);
         fileBackedTaskManager.addSubtask(subtask2);
-        fileBackedTaskManager.addEpic(epic2);
     }
 
     private static void createTask() {
