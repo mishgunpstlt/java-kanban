@@ -43,13 +43,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String toString(Task task) {
         if (task instanceof Subtask) {
             return task.getId() + "," + TypeTask.SUBTASK + "," + task.getNameTask() + "," + task.getStatusTask()
-                    + "," + task.getDescriptionTask() + "," + ((Subtask) task).getEpicId();
+                     + "," + task.getDescriptionTask() + "," + ((Subtask) task).getEpicId();
         } else if (task instanceof Epic) {
             return task.getId() + "," + TypeTask.EPIC + "," + task.getNameTask() + "," + task.getStatusTask()
-                    + "," + task.getDescriptionTask();
+                     + "," + task.getDescriptionTask();
         } else {
             return task.getId() + "," + TypeTask.TASK + "," + task.getNameTask() + "," + task.getStatusTask()
-                    + "," + task.getDescriptionTask();
+                     + "," + task.getDescriptionTask();
         }
     }
 
