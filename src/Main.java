@@ -1,8 +1,12 @@
+import managers.FileBackedTaskManager;
 import managers.TaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.io.File;
+import java.util.Scanner;
 
 import static utils.Managers.getDefault;
 
@@ -11,7 +15,63 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
+        System.out.println("1 - Создание задача и получение истории");
+        System.out.println("2 - Добавление задач в файл");
+        System.out.println("3 - Загрузка задач из файла");
 
+        Scanner scanner = new Scanner(System.in);
+        int value = scanner.nextInt();
+
+        switch (value) {
+            case 1:
+                createTask();
+                break;
+            case 2:
+                addTaskToFile();
+                break;
+            case 3:
+                loadTaskFromFile();
+                break;
+            default:
+                System.exit(0);
+                break;
+        }
+    }
+
+    private static void loadTaskFromFile() {
+        File file = new File("src/resources/autoSave.csv");
+
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+
+        System.out.println(fileBackedTaskManager.getTask());
+        System.out.println(fileBackedTaskManager.getEpic());
+        System.out.println(fileBackedTaskManager.getSubtask());
+
+        Task task6 = new Task("Купить п312321родукты", "Овощи, фрукты, колбасу", Status.NEW);
+        System.out.println("Id новой добавленной задачи: " + fileBackedTaskManager.addTask(task6));
+    }
+
+    private static void addTaskToFile() {
+        File file = new File("src/resources/autoSave.csv");
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
+
+        // Добавляем задачи
+        Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
+        Task task2 = new Task("Задача 2", "Описание задачи 2", Status.IN_PROGRESS);
+        Epic epic1 = new Epic("Эпик 1", "Описание эпика 1");
+        Subtask subtask1 = new Subtask("Подзаdasdasдача 1", "Описание подзадачи 1", Status.DONE, 3);
+        Subtask subtask2 = new Subtask("dasdaasdadasdaа 1", "Описание подзадачи 2", Status.DONE, 3);
+        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
+
+        fileBackedTaskManager.addTask(task1);
+        fileBackedTaskManager.addTask(task2);
+        fileBackedTaskManager.addEpic(epic1);
+        fileBackedTaskManager.addEpic(epic2);
+        fileBackedTaskManager.addSubtask(subtask1);
+        fileBackedTaskManager.addSubtask(subtask2);
+    }
+
+    private static void createTask() {
         TaskManager taskManager = getDefault();
 
         Task task1 = new Task("Купить квартиру", "В москве", Status.NEW);
