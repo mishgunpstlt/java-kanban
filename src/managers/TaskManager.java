@@ -6,6 +6,7 @@ import tasks.Task;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     int addTask(Task task);
@@ -49,4 +50,10 @@ public interface TaskManager {
     Collection<Subtask> getSubtaskByEpic(Epic epic);
 
     List<Task> getHistory();
+
+    void updateStartTimeDurationEpic(Epic epic);
+
+    void addPrioritizedTasks(Task task);
+
+    TreeSet<Task> getPrioritizedTasks();
 }

@@ -4,6 +4,8 @@ import exception.ManagerSaveException;
 import tasks.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -43,20 +45,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String toString(Task task) {
         if (task instanceof Subtask) {
             return task.getId() + "," + TypeTask.SUBTASK + "," + task.getNameTask() + "," + task.getStatusTask()
-                    + "," + task.getDescriptionTask() + "," + ((Subtask) task).getEpicId();
+                    + "," + task.getDescriptionTask() + "," + ((Subtask) task).getEpicId() + ","
+                    + task.getDuration().toMinutes() + "," + task.getStartTime() + "," + task.getEndTime();
         } else if (task instanceof Epic) {
             return task.getId() + "," + TypeTask.EPIC + "," + task.getNameTask() + "," + task.getStatusTask()
-                    + "," + task.getDescriptionTask();
+                    + "," + task.getDescriptionTask() + "," + task.getDuration()
+                    + "," + task.getStartTime() + "," + task.getEndTime();
         } else {
             return task.getId() + "," + TypeTask.TASK + "," + task.getNameTask() + "," + task.getStatusTask()
-                    + "," + task.getDescriptionTask();
+                    + "," + task.getDescriptionTask() + "," + task.getDuration().toMinutes()
+                    + "," + task.getStartTime() + "," + task.getEndTime();
         }
     }
 
     private Task fromString(String value) {
         String[] taskString = value.split(",");
         if (taskString[1].equals("SUBTASK")) {
-            Subtask subtask = new Subtask(taskString[2], taskString[4], Status.valueOf(taskString[3]), Integer.parseInt(taskString[5]));
+            Subtask subtask = new Subtask(taskString[2], taskString[4], Status.valueOf(taskString[3]),
+                    Integer.parseInt(taskString[5]), Duration.ofMinutes(Long.parseLong(taskString[6])),
+                    LocalDateTime.parse(taskString[7]));
             subtask.setId(Integer.parseInt(taskString[0]));
             return subtask;
         } else if (taskString[1].equals("EPIC")) {
@@ -64,7 +71,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             epic.setId(Integer.parseInt(taskString[0]));
             return epic;
         } else {
-            Task task = new Task(taskString[2], taskString[4], Status.valueOf(taskString[3]));
+            Task task = new Task(taskString[2], taskString[4], Status.valueOf(taskString[3]),
+                    Duration.ofMinutes(Long.parseLong(taskString[5])), LocalDateTime.parse(taskString[6]));
             task.setId(Integer.parseInt(taskString[0]));
             return task;
         }
@@ -72,7 +80,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter writerToFile = new BufferedWriter(new FileWriter(autoSaveFile))) {
-            writerToFile.write("id,type,name,status,description,epic");
+            writerToFile.write("id,type,name,status,description,epic,duration,startTime,endTime");
             writerToFile.newLine();
             for (Task task : getTask()) {
                 writerToFile.write(toString(task));
@@ -95,7 +103,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public int addTask(Task task) {
         super.addTask(task);
         save();
-        return task.getId();
+        return super.addTask(task);
     }
 
     @Override
@@ -109,7 +117,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public int addSubtask(Subtask subtask) {
         super.addSubtask(subtask);
         save();
-        return subtask.getId();
+        return super.addSubtask(subtask);
     }
 
     @Override
@@ -169,6 +177,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void removeSubtaskById(int id) {
         super.removeSubtaskById(id);
+        save();
+    }
+
+    @Override
+    public void updateStartTimeDurationEpic(Epic epic) {
+        super.updateStartTimeDurationEpic(epic);
         save();
     }
 }
