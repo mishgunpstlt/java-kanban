@@ -6,6 +6,4 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     public InMemoryTaskManager createTaskManager() {
         return new InMemoryTaskManager();
     }
-
-
 }

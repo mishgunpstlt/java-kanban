@@ -29,9 +29,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldCorrectTask() {
         Task task = new Task("Купить квартиру", "В москве", Status.NEW, Duration.ofMinutes(50), LocalDateTime.of(2025, 2, 4, 15, 0));
-        int taskId = taskManager.addTask(task);
+        taskManager.addTask(task);
 
-        Task savedTask = taskManager.getTaskById(taskId);
+        Task savedTask = taskManager.getTaskById(task.getId());
 
         Assertions.assertNotNull(savedTask, "Задача не найдена.");
         Assertions.assertEquals(task, savedTask, "Задачи не совпадают.");
