@@ -1,13 +1,25 @@
 package tasks;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    private ArrayList<Integer> subtaskIdToEpic = new ArrayList<>();
+    private final ArrayList<Integer> subtaskIdToEpic = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String name, String description) {
-        super(name, description, Status.NEW);
+        super(name, description, Status.NEW, null, null);
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+
     }
 
     public void removeSubtask(Subtask subtask) {
@@ -29,4 +41,5 @@ public class Epic extends Task {
     public ArrayList<Integer> getSubtaskIdToEpic() {
         return subtaskIdToEpic;
     }
+
 }
