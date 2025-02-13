@@ -13,17 +13,16 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static utils.Managers.getDefault;
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
+
+    protected File fileTest = new File("fileTest.cvs");
+    protected FileBackedTaskManager fileBackedTaskManager;
 
     @BeforeEach
     void beforeEach() {
         fileBackedTaskManager = new FileBackedTaskManager(fileTest);
     }
-    protected File fileTest = new File("fileTest.cvs");
-
-    protected FileBackedTaskManager fileBackedTaskManager;
 
     @Override
     protected FileBackedTaskManager createTaskManager() {
@@ -51,9 +50,9 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     void shouldLoadingFromFile() {
         fileBackedTaskManager = FileBackedTaskManager.loadFromFile(fileTest);
 
-        Assertions.assertFalse(!fileBackedTaskManager.getTask().isEmpty(), "Задачи не выгружены");
-        Assertions.assertFalse(!fileBackedTaskManager.getEpic().isEmpty(), "Эпики не выгружены");
-        Assertions.assertFalse(!fileBackedTaskManager.getSubtask().isEmpty(), "Подзадачи не существует");
+        Assertions.assertTrue(fileBackedTaskManager.getTask().isEmpty(), "Задачи не выгружены");
+        Assertions.assertTrue(fileBackedTaskManager.getEpic().isEmpty(), "Эпики не выгружены");
+        Assertions.assertTrue(fileBackedTaskManager.getSubtask().isEmpty(), "Подзадачи не существует");
     }
 
     @Test
