@@ -4,10 +4,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Task {
+    protected int id;
     protected String nameTask;
     protected String descriptionTask;
     protected Status statusTask;
-    protected int id;
     protected Duration duration;
     protected LocalDateTime startTime;
 
@@ -76,7 +76,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Имя: " + getNameTask() + " Статус: " + getStatusTask() + " Продолжительность: "
+        return "ID: " + getId() + " Имя: " + getNameTask() + " Статус: " + getStatusTask() + " Продолжительность: "
                 + getDuration() + " Время и дата начала: " + getStartTime() + " Время и дата конца: " + getEndTime();
     }
 
